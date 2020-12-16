@@ -47,6 +47,7 @@ window.addEventListener('DOMContentLoaded', function(){
             
         }
 
+        updateClock();
         idInterval = setInterval(updateClock, 1000);
 
     }
@@ -69,7 +70,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
         btnMenu.addEventListener('click', handlerMenu);
         closeBtn.addEventListener('click', handlerMenu);
-        menuItems.forEach((item) => item.addEventListener('click', handlerMenu));
+        menuItems.forEach((item) => item.querySelector('a').addEventListener('click', handlerMenu));
 
         //scroll
 
@@ -81,7 +82,7 @@ window.addEventListener('DOMContentLoaded', function(){
         }
 
         for(let anchor of menuItems){
-            anchor.addEventListener('click', (e) => {
+            anchor.querySelector('a').addEventListener('click', (e) => {
                 e.preventDefault();
                 const blockID = anchor.querySelector('a').getAttribute('href');
 
@@ -105,10 +106,14 @@ window.addEventListener('DOMContentLoaded', function(){
         const popup = document.querySelector('.popup'),
             popupBtn = document.querySelectorAll('.popup-btn'),
             popupClose = document.querySelectorAll('.popup-close'),
-            popupContent = document.querySelector('.popup-content'),
+            popupContent = document.querySelector('.popup-content');
+
+        let downInterval, count = 0,
             clientWidth = document.documentElement.clientWidth;
 
-        let downInterval, count = 0;
+        window.addEventListener('resize', () => {
+            clientWidth = document.documentElement.clientWidth;
+        });
 
         //popup-animation
 
@@ -127,7 +132,7 @@ window.addEventListener('DOMContentLoaded', function(){
             popup.style.display = 'block';
 
             if(clientWidth >= 768){
-                downInterval = requestAnimationFrame(popupDown);
+                downInterval = requestAnimationFrame(popupDown);    
             }   
         });
 
