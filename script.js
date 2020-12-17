@@ -41,8 +41,6 @@ window.addEventListener('DOMContentLoaded', function(){
                 timerHours.textContent = '00';
                 timerMinutes.textContent  = '00';
                 timerSeconds.textContent = '00';
-
-                console.log(timerHours.innerHTML);
             }
             
         }
@@ -56,56 +54,71 @@ window.addEventListener('DOMContentLoaded', function(){
 
     //menu
 
-    const toggleMenu = () => {
+    function menu (){
 
         const btnMenu = document.querySelector('.menu'),
-            menu = document.querySelector('menu'),
-            closeBtn = document.querySelector('.close-btn'),
-            menuItems = menu.querySelectorAll('ul>li'),
-            scrollBtn = document.querySelector('img[src="images/scroll.svg"]');
+                menu = document.querySelector('menu'),
+                closeBtn = document.querySelector('.close-btn'),
+                menuItems = menu.querySelectorAll('ul>li'),
+                scrollBtn = document.querySelector('img[src="images/scroll.svg"]');
 
-        function handlerMenu () {
-            menu.classList.toggle('active-menu');
-        }
+        const toggleMenu = () => {
 
-        btnMenu.addEventListener('click', handlerMenu);
-        closeBtn.addEventListener('click', handlerMenu);
-        menuItems.forEach((item) => item.querySelector('a').addEventListener('click', handlerMenu));
+            function handlerMenu () {
+                menu.classList.toggle('active-menu');
+            }
+    
+            btnMenu.addEventListener('click', handlerMenu); //1 
 
-        //scroll
+            menu.addEventListener('click', (event) => {
+                let target = event.target;
+                console.log(target);
 
-        function scrolling (id){
-            document.querySelector(id).scrollIntoView({
-                behavior: 'smooth',
-                block: 'center'
+                if(target.closest('a')){
+                    handlerMenu();
+                }
             });
-        }
-
-        for(let anchor of menuItems){
-            anchor.querySelector('a').addEventListener('click', (e) => {
+    
+        };
+    
+        //scrollMenu
+        const scrollMenu = () => {
+            const scrolling = (id) => {
+                document.querySelector(id).scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            };
+    
+            for(let anchor of menuItems){
+                anchor.querySelector('a').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const blockID = anchor.querySelector('a').getAttribute('href');
+                
+                    scrolling(blockID);
+                });
+            }
+        
+            scrollBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                const blockID = anchor.querySelector('a').getAttribute('href');
-
+                const blockID = menuItems[0].querySelector('a').getAttribute('href');
+            
                 scrolling(blockID);
             });
-        }
+        };
+    
+        toggleMenu();
+        scrollMenu();
+    }
 
-        scrollBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const blockID = menuItems[0].querySelector('a').getAttribute('href');
-
-            scrolling(blockID);
-        });
-    };
-
-    toggleMenu();
-
+    menu();
+    
     //popup
 
     const togglePopUp = () => {
         const popup = document.querySelector('.popup'),
             popupBtn = document.querySelectorAll('.popup-btn'),
-            popupClose = document.querySelectorAll('.popup-close'),
+            popupClose = document.querySelector('.popup-close'),
             popupContent = document.querySelector('.popup-content');
 
         let downInterval, count = 0,
@@ -120,8 +133,8 @@ window.addEventListener('DOMContentLoaded', function(){
         const popupDown = () => {
             downInterval = requestAnimationFrame(popupDown);
             count++;
-            if(count < 20){
-                popupContent.style.top = 12*count + 'px';
+            if(count < 15){
+                popupContent.style.top = 15*count + 'px';
             } else {
                 cancelAnimationFrame(downInterval);
             }
@@ -136,13 +149,62 @@ window.addEventListener('DOMContentLoaded', function(){
             }   
         });
 
-        popup.addEventListener('click', () => {
-            count = 0;
-            popup.style.display = 'none';            
-        });
+            popup.addEventListener('click', (event) => {
+                count = 0;
+                let target = event.target;
+                if (target !== popupClose){
+                    target = target.closest('.popup-content');
+                }
 
-    });
+                if(!target || target === popupClose){
+                    popup.style.display = 'none';
+                }
+            });
+
+        });  
+
+    };
+    togglePopUp();
+
+    //tabs
+
+    const tabs = () => {
+        const tabHeader = document.querySelector('.service-header'),
+            tab = tabHeader.querySelectorAll('.service-header-tab'),
+            tabContent = document.querySelectorAll('.service-tab');
+
+        const toggleTabContent = (index) => {
+            for(let i = 0; i < tabContent.length; i++){
+                if(index === i){
+                    tab[i].classList.add('active');
+                    tabContent[i].classList.remove('d-none');
+                } else {
+                    tab[i].classList.remove('active');
+                    tabContent[i].classList.add('d-none');
+                }
+            }
+        };
+
+        tabHeader.addEventListener('click', (event) => {
+            let target = event.target;
+            target = target.closest('.service-header-tab');
+
+                if (target.classList.contains('service-header-tab')){
+
+                    tab.forEach((item, i) => {
+
+                        if(item === target){
+                            toggleTabContent(i);  
+                        }
+
+                    });
+
+                }
+
+            }
+            
+        );
     };
 
-    togglePopUp();
+    tabs();
 });
