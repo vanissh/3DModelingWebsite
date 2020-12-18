@@ -56,9 +56,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
     function menu (){
 
-        const btnMenu = document.querySelector('.menu'),
-                menu = document.querySelector('menu'),
-                closeBtn = document.querySelector('.close-btn'),
+        const menu = document.querySelector('menu'),
                 menuItems = menu.querySelectorAll('ul>li'),
                 scrollBtn = document.querySelector('img[src="images/scroll.svg"]');
 
@@ -67,18 +65,18 @@ window.addEventListener('DOMContentLoaded', function(){
             function handlerMenu () {
                 menu.classList.toggle('active-menu');
             }
-    
-            btnMenu.addEventListener('click', handlerMenu); //1 
 
-            menu.addEventListener('click', (event) => {
+            document.addEventListener('click', (event) => {
                 let target = event.target;
-                console.log(target);
 
-                if(target.closest('a')){
+                if(target.closest('menu') && target.closest('a') || target.closest('.menu')){
+                    handlerMenu();
+                } else if(menu.classList.contains('active-menu') && target !== menu){
                     handlerMenu();
                 }
+
             });
-    
+
         };
     
         //scrollMenu
