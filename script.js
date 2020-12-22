@@ -222,6 +222,7 @@ window.addEventListener('DOMContentLoaded', function(){
             let element = document.createElement('li');
             element.classList.add('dot');
             dot.push(element);
+            dot[0].classList.add('dot-active');
             dots.append(element);
         }
 
@@ -308,4 +309,50 @@ window.addEventListener('DOMContentLoaded', function(){
     };
 
     slider();
+
+    //calculator
+
+    const calculator = () => {
+
+        const calcBlock = document.querySelector('.calc-block');
+        
+        calcBlock.addEventListener('input', (e) => {
+            let target = e.target;
+
+            if(target.matches('.calc-item') && !target.matches('.calc-type')){
+                target.value = target.value.replace(/[^\d]/g, '');
+            }
+
+        });
+    };
+
+    calculator();
+
+    //command
+
+    const changePhoto = () => {
+
+        const command = document.getElementById('command');
+        let temp;
+
+        command.addEventListener('mouseover', (e) => {
+        let target = e.target;
+        
+        if(target.matches('img')){
+            temp = target.src;
+            target.src = target.dataset.img;
+        }
+        });
+
+        command.addEventListener('mouseout', (e) => {
+            let target = e.target;
+            
+            if(target.matches('img')){
+                target.src = temp;
+            }
+        });
+        
+    };
+
+    changePhoto();
 });
