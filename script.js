@@ -356,6 +356,12 @@ window.addEventListener('DOMContentLoaded', function(){
                 let n = 0,
                     time = 100,
                     step = 250;
+                if(num > 25000 && num < 50000){
+                    step = 2000;
+                } else if(num > 50000){
+                    step = 5000;
+                }
+
                 let t = Math.round(time/(num/step));
                 console.log(num);
 
