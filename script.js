@@ -381,6 +381,12 @@ window.addEventListener('DOMContentLoaded', function(){
             if(target.matches('select') || target.matches('input')){
                 countSum(); 
             }
+            if(calcType.value === ''){
+                calcSquare.value = null;
+                calcDay.value = null;
+                calcCount.value = null;
+                totalValue.innerText = 0;
+            }
         });
 
         const verifyData = () => {
