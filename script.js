@@ -312,21 +312,69 @@ window.addEventListener('DOMContentLoaded', function(){
 
     //calculator
 
-    const calculator = () => {
 
-        const calcBlock = document.querySelector('.calc-block');
+    const calc = (price = 100) => {
+    
+        const calcBlock = document.querySelector('.calc-block'),
+            calcType = document.querySelector('.calc-type'),
+            calcSquare = document.querySelector('.calc-square'),
+            calcDay = document.querySelector('.calc-day'),
+            calcCount = document.querySelector('.calc-count'),
+            totalValue = document.getElementById('total');
+
+        if(window.performance){
+            calcSquare.value = null;
+            calcDay.value = null;
+            calcCount.value = null;
+        }
         
-        calcBlock.addEventListener('input', (e) => {
-            let target = e.target;
+        const countSum = () => {
+            let total = 0,
+                countValue = 1,
+                dayValue = 1;
+            const typeValue = calcType.options[calcType.selectedIndex].value,
+                squareValue = +calcSquare.value;
 
-            if(target.matches('.calc-item') && !target.matches('.calc-type')){
-                target.value = target.value.replace(/[^\d]/g, '');
+            if(calcCount.value > 1){
+                countValue += (calcCount.value - 1) / 10;
             }
 
+            if(calcDay.value && calcDay.value < 5){
+                dayValue *= 2;
+            } else if (calcDay.value && calcDay.value < 10){
+                dayValue *= 1.5;
+            }
+
+            if(typeValue && squareValue){
+                total = price * typeValue * squareValue * countValue * dayValue;
+            }
+
+            totalValue.textContent = total;
+        };
+
+        calcBlock.addEventListener('change', (e) => {
+            const target = e.target;
+            if(target.matches('select') || target.matches('input')){
+                countSum(); 
+            }
         });
+
+        const verifyData = () => {
+
+            calcBlock.addEventListener('input', (e) => {
+                let target = e.target;
+
+                if(target.matches('.calc-item') && !target.matches('.calc-type')){
+                    target.value = target.value.replace(/[^\d]/g, '');
+                }
+            });
+        };
+
+        verifyData();
+    
     };
 
-    calculator();
+    calc(100);
 
     //command
 
