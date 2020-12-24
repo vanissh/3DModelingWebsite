@@ -351,34 +351,33 @@ window.addEventListener('DOMContentLoaded', function(){
                 num = Math.ceil(total);
             }
 
-            const outNum = () => {
+        const outNum = () => {
+        
+            let n = 0,
+                time = 100,
+                step = 250;
+            if(num > 25000 && num < 50000){
+                step = 2000;
+            } else if(num > 50000){
+                step = 5000;
+            }
+            let t = Math.round(time/(num/step));
+            console.log(num);
+            if(num !== 0){
+                let interval = setInterval(()=>{
+                n += step;
+                if(n >= num){
+                    clearInterval(interval);
+                    n = num;
+                }
+                totalValue.innerText = n;
+            }, t);
+            } else {
+                totalValue.innerText = 0;
+            }
             
-                let n = 0,
-                    time = 100,
-                    step = 250;
-                if(num > 25000 && num < 50000){
-                    step = 2000;
-                } else if(num > 50000){
-                    step = 5000;
-                }
-
-                let t = Math.round(time/(num/step));
-                console.log(num);
-
-                if(num !== 0){
-                    let interval = setInterval(()=>{
-                    n += step;
-                    if(n >= num){
-                        clearInterval(interval);
-                        n = num;
-                    }
-                    totalValue.innerText = n;
-                }, t);
-                }
-                
-            };
-
-            outNum();
+        };
+        outNum();
             
         };
 
