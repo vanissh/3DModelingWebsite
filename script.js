@@ -321,6 +321,7 @@ window.addEventListener('DOMContentLoaded', function(){
             calcDay = document.querySelector('.calc-day'),
             calcCount = document.querySelector('.calc-count'),
             totalValue = document.getElementById('total');
+        let interval;
 
         if(window.performance){
             calcSquare.value = null;
@@ -362,9 +363,9 @@ window.addEventListener('DOMContentLoaded', function(){
                 step = 5000;
             }
             let t = Math.round(time/(num/step));
-            console.log(num);
             if(num !== 0){
-                let interval = setInterval(()=>{
+                
+                interval = setInterval(()=>{
                 n += step;
                 if(n >= num){
                     clearInterval(interval);
@@ -373,7 +374,11 @@ window.addEventListener('DOMContentLoaded', function(){
                 totalValue.innerText = n;
             }, t);
             } else {
-                totalValue.innerText = 0;
+                totalValue.textContent = 0;
+                calcSquare.value = null;
+                calcDay.value = null;
+                calcCount.value = null;
+
             }
             
         };
@@ -383,8 +388,10 @@ window.addEventListener('DOMContentLoaded', function(){
 
         calcBlock.addEventListener('change', (e) => {
             const target = e.target;
+            clearInterval(interval);
             if(target.matches('select') || target.matches('input')){
                 countSum(); 
+                
             }
             if(calcType.value === ''){
                 calcSquare.value = null;
