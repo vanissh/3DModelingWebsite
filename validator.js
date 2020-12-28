@@ -28,7 +28,6 @@ class Validator{
     init(){
         this.applyStyle();
         this.setPattern();
-        console.log(this.elementsForm);
 
         this.elementsForm.forEach(elem => elem.addEventListener('change',
             this.checkIt.bind(this)));
@@ -90,7 +89,6 @@ class Validator{
         const errorDiv = document.createElement('div');
         errorDiv.textContent = 'Ошибка в этом поле';
         errorDiv.classList.add('validator-error');
-        console.log(elem);
         elem.insertAdjacentElement('afterend', errorDiv);
     }
 
