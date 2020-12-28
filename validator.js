@@ -17,6 +17,10 @@ class Validator{
                 ['notEmpty'],
                 ['pattern', 'message']
             ],
+            [`${selector}-email`]: [
+                ['notEmpty'],
+                ['pattern', 'email']
+            ],
         };
         this.elementsForm = [...this.form.elements].filter(item => {
             return item.tagName.toLowerCase() !== 'button' &&
@@ -120,15 +124,19 @@ class Validator{
     setPattern(){
 
         if(!this.pattern.phone){
-            this.pattern.phone = /^[\+\d]+$/;
+            this.pattern.phone = /^[\+\d-]{11,}$/;
         }
 
         if(!this.pattern.name){
-            this.pattern.name = /^[А-яё\ ]+$/i;
+            this.pattern.name = /^[А-яё\ ]{2,}$/i;
         }
 
         if(!this.pattern.message){
             this.pattern.message = /^[\s\а-яё\d?!.,:]+$/i;
+        }
+
+        if(!this.pattern.email){
+            this.pattern.email = /^\w+@\w+\.\w{2,}$/i;
         }
     }
     

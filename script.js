@@ -460,15 +460,22 @@ window.addEventListener('DOMContentLoaded', function(){
 
     const sendForm = () => {
         const errorMessage = 'Что-то пошло не так...',
-            loadMessage = 'Загрузка...',
             successMessage = 'Спасибо! Мы скоро с вами свяжемся';
         
         let form;
 
-        const statusMessage = document.createElement('div');
+        const statusMessage = document.createElement('div'),
+            preloader = document.createElement('section');
+            preloader.innerHTML = `
+                <div class='sk-three-bounce'>
+                <div class='sk-bounce-1 sk-child'></div>
+                <div class='sk-bounce-2 sk-child'></div>
+                <div class='sk-bounce-3 sk-child'></div>
+                </div>`;
 
         statusMessage.style.cssText = 'font-size: 2rem';
         statusMessage.style.cssText = 'color: #fff';
+        
 
         const postData = (body, outputData, errorData) => {
             const request = new XMLHttpRequest();
@@ -499,14 +506,13 @@ window.addEventListener('DOMContentLoaded', function(){
             if(target.matches('#form1') || target.matches('#form2') || target.matches('#form3')){
                 form = target;  
             }
+
             if(!validator(e, form.id)){
                 return;
             }
-            const inputs = form.querySelectorAll('input');
-            
 
-            form.append(statusMessage);
-            statusMessage.textContent = loadMessage;
+            const inputs = form.querySelectorAll('input');
+            form.append(preloader);
             const formData = new FormData(form);
             let body = {};
 
@@ -520,9 +526,13 @@ window.addEventListener('DOMContentLoaded', function(){
             
             postData(body, 
                 () => {
+                    preloader.remove();
+                    form.append(statusMessage);
                     statusMessage.textContent = successMessage;
                 }, 
                 (error) => {
+                    preloader.remove();
+                    form.append(statusMessage);
                     statusMessage.textContent = errorMessage;
                     console.log(error);
             });
@@ -531,6 +541,4 @@ window.addEventListener('DOMContentLoaded', function(){
     };
 
     sendForm();
-
-    
 });
