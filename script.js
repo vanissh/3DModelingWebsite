@@ -1,5 +1,3 @@
-
-
 window.addEventListener('DOMContentLoaded', function(){
     'use strict';
 
@@ -445,4 +443,94 @@ window.addEventListener('DOMContentLoaded', function(){
     };
 
     changePhoto();
+
+    //validator
+
+    const validator = (e, id) => {
+
+        const valid = new Validator({
+            selector: id,
+        });
+
+        valid.init();
+        return valid.forSubmit(e);
+	};
+
+    //send-ajax-form
+
+    const sendForm = () => {
+        const errorMessage = 'Что-то пошло не так...',
+            loadMessage = 'Загрузка...',
+            successMessage = 'Спасибо! Мы скоро с вами свяжемся';
+        
+        let form;
+
+        const statusMessage = document.createElement('div');
+
+        statusMessage.style.cssText = 'font-size: 2rem';
+        statusMessage.style.cssText = 'color: #fff';
+
+        const postData = (body, outputData, errorData) => {
+            const request = new XMLHttpRequest();
+            request.addEventListener('readystatechange', () => {
+
+                if(request.readyState !==4){
+                    return;
+                }
+
+                if(request.status === 200){
+                    outputData();
+                } else {
+                    errorData(request.status);
+                }
+                
+            });
+
+            request.open('POST', './server.php');
+            request.setRequestHeader('Content-Type', 'application/json');
+            request.send(JSON.stringify(body));
+        };
+
+        document.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            let target = e.target;
+
+            if(target.matches('#form1') || target.matches('#form2') || target.matches('#form3')){
+                form = target;  
+            }
+            if(!validator(e, form.id)){
+                return;
+            }
+            const inputs = form.querySelectorAll('input');
+            
+
+            form.append(statusMessage);
+            statusMessage.textContent = loadMessage;
+            const formData = new FormData(form);
+            let body = {};
+
+            formData.forEach((val, key) => {
+                body[key] = val;
+            });
+
+            inputs.forEach(item => {
+                item.value = '';
+            });
+            
+            postData(body, 
+                () => {
+                    statusMessage.textContent = successMessage;
+                }, 
+                (error) => {
+                    statusMessage.textContent = errorMessage;
+                    console.log(error);
+            });
+        });
+
+    };
+
+    sendForm();
+
+    
 });
