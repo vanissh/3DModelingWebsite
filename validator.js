@@ -35,16 +35,22 @@ class Validator{
 
         this.elementsForm.forEach(elem => elem.addEventListener('change',
             this.checkIt.bind(this)));
+        this.form.addEventListener('submit', e => {
+            this.elementsForm.forEach(elem => this.checkIt({target: elem}));
+            if(this.error.size){
+                e.preventDefault();
+            }
+        });
     }
 
-    forSubmit(e){
-        this.elementsForm.forEach(elem => this.checkIt({target: elem}));
-            if(this.error.size){
-                return false;
-    } else {
-        return true;
-    }
-}
+//     forSubmit(e){
+//         this.elementsForm.forEach(elem => this.checkIt({target: elem}));
+//             if(this.error.size){
+//                 return false;
+//     } else {
+//         return true;
+//     }
+// }
 
     isValid(elem){
         const validatorMethod = {
@@ -111,7 +117,7 @@ class Validator{
                 box-shadow: 0 0 0 2px rgb(161, 33, 50);
             }
             input.success{
-
+                box-shadow: 0 0 0 2px green;
             }
             .validator-error {
                 font-size: 14px;
@@ -124,7 +130,7 @@ class Validator{
     setPattern(){
 
         if(!this.pattern.phone){
-            this.pattern.phone = /^[\+\d-]{11,}$/;
+            this.pattern.phone = /^\+?[78]([-()]*\d){10}$/;
         }
 
         if(!this.pattern.name){
