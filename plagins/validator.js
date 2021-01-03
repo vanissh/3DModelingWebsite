@@ -94,6 +94,11 @@ class Validator{
         errorDiv.textContent = 'Ошибка в этом поле';
         errorDiv.classList.add('validator-error');
         elem.insertAdjacentElement('afterend', errorDiv);
+
+        if(elem.closest('#form1')){
+            errorDiv.style.bottom = '23px';
+        }
+
     }
 
     showSuccess(elem){
@@ -113,10 +118,12 @@ class Validator{
             input.success{
             }
             .validator-error {
-                font-size: 14px;
+                position: relative;
+                font-size: 12px;
                 color: white;
             }
         `;
+
         document.head.append(style);
     }
 
@@ -127,7 +134,7 @@ class Validator{
         }
 
         if(!this.pattern.name){
-            this.pattern.name = /^[А-яё\ ]{2,}$/i;
+            this.pattern.name = /^[А-яё\ ]{2,50}$/i;
         }
 
         if(!this.pattern.message){

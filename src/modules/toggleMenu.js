@@ -13,11 +13,11 @@ function menu (){
         document.addEventListener('click', (event) => {
             let target = event.target;
 
-            if(target.closest('menu') && target.closest('a') || target.closest('.menu')){
-                handlerMenu();
-            } else if(menu.classList.contains('active-menu') && target !== menu){
-                handlerMenu();
-            }
+            if(target.closest('.menu') || 
+                target.closest('menu') && target.closest('a') ||
+                menu.classList.contains('active-menu') && !target.closest('menu') ){
+                    handlerMenu();
+            } 
 
         });
 
