@@ -58,13 +58,7 @@ const calc = (price = 100) => {
             }
             totalValue.innerText = n;
         }, t);
-        } 
-        // else if(calcSquare.value === '') {
-        //     totalValue.textContent = 0;
-        //     calcSquare.value = null;
-        //     calcDay.value = null;
-        //     calcCount.value = null;
-        // }
+        }
         
     };
     outNum();
@@ -76,16 +70,11 @@ const calc = (price = 100) => {
         clearInterval(interval);
         if(target.matches('select').value !== null|| target.matches('input')){
             countSum();  
-        } else if(target.matches('select').value === null) {
-            
-            calcSquare.value = null;
-            calcDay.value = null;
-            calcCount.value = null;
-            totalValue.innerText = 0;
-        }
-
+        } 
+        
         if(calcSquare.value === '' && target.matches('input.calc-square') || 
                 calcType.value === '' && target.matches('select')){
+
             calcSquare.value = null;
             calcDay.value = null;
             calcCount.value = null;
